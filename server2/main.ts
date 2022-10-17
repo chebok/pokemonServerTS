@@ -4,6 +4,9 @@ import { ExeptionFilter } from './errors/exeption.filter';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { ILogger } from './logger/logger.interface';
 import { LoggerService } from './logger/logger.service';
+import { RolesRepository } from './roles/roles.repo';
+import { IRolesRepository } from './roles/roles.repo.interface';
+import { RolesService } from './roles/roles.service';
 import { TYPES } from './types';
 import { UserController } from './users/users.controller';
 import { IUserController } from './users/users.controller.interface';
@@ -17,6 +20,8 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<App>(TYPES.Application).to(App);
   bind<UsersRepository>(TYPES.UsersRepository).to(UsersRepository);
   bind<UsersService>(TYPES.UsersService).to(UsersService);
+  bind<IRolesRepository>(TYPES.IRolesRepository).to(RolesRepository);
+  bind<RolesService>(TYPES.RolesService).to(RolesService);
 });
 
 function bootstrap() {

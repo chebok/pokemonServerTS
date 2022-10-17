@@ -1,5 +1,3 @@
-// import pkg from 'mongoose';
-
 import { model, Schema, Model, Document } from 'mongoose';
 
 export interface IUser {
@@ -8,6 +6,8 @@ export interface IUser {
   roles: string[];
 }
 
+export interface IUserModel extends IUser, Document {}
+
 const UserSchema = new Schema({
   username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
@@ -15,4 +15,4 @@ const UserSchema = new Schema({
 });
 
 
-export const User: Model<any> = model('User', UserSchema);
+export const User = model<IUserModel>('User', UserSchema);
