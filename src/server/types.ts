@@ -10,4 +10,7 @@ export const TYPES = {
   ICollectionController: Symbol.for('CollectionController'),
   CollectionService: Symbol.for('CollectionService'),
   ICollectionRepository: Symbol.for('CollectionRepository'),
+  IDeckController: Symbol.for('DeckController'),
+  DeckService: Symbol.for('DeckService'),
+  IDeckRepository: Symbol.for('DeckRepository'),
 }

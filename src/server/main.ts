@@ -1,10 +1,10 @@
 import { Container, ContainerModule, interfaces } from 'inversify';
 import { App } from './app';
-import { CollectionController } from './collection/coll.controller';
-import { ICollectionController } from './collection/coll.controller.interface';
-import { CollectionRepository } from './collection/coll.repo';
-import { ICollectionRepository } from './collection/coll.repo.interface';
-import { CollectionService } from './collection/coll.service';
+import { CollectionController } from './deck/deck.controller';
+import { ICollectionController } from './deck/deck.controller.interface';
+import { CollectionRepository } from './deck/deck.repo';
+import { ICollectionRepository } from './deck/deck.repo.interface';
+import { CollectionService } from './deck/deck.service';
 import { ExeptionFilter } from './errors/exeption.filter';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { ILogger } from './logger/logger.interface';

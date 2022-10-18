@@ -1,11 +1,11 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../types';
-import { CreateCollectionDto } from './dto/create-deck.dto';
-import { ICollectionRepository } from './coll.repo.interface';
-import { ICollectionModel } from './coll.model';
+import { CreateDeckDto } from './dto/create-deck.dto';
+import { IDeckRepository } from './deck.repo.interface';
+import { ICollectionModel } from './deck.model';
 import findCards from '../../cards/findCards';
-import collectionValidate from './coll.validate';
+import collectionValidate from './deck.validate';
 
 @injectable()
 export class CollectionService {

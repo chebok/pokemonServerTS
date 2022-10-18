@@ -7,7 +7,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
 import 'reflect-metadata';
 import { IUserController } from './users/users.controller.interface';
-import { ICollectionController } from './collection/coll.controller.interface';
+import { ICollectionController } from './deck/deck.controller.interface';
 
 @injectable()
 export class App {
