@@ -20,14 +20,20 @@ export class CollectionController extends BaseController implements ICollectionC
 
   async updateCollection(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
-    const { cardsToAdd } = req.body;
-    const coll = await this.collectionService.updateCollectionByUserId(userId, cardsToAdd);
-    this.ok(res, coll);
+    const cardsToAdd: number[] = req.body.cardsToAdd;
+    const [errors, collection] = await this.collectionService.updateCollectionByUserId(userId, cardsToAdd);
+    if (errors) {
+      next(new HTTPError(400, errors.toString(), 'updateCollection'))
+    }
+    this.ok(res, collection);
   }
 
   async getCollection(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
-    const coll = await this.collectionService.getCollectionByUserId(userId);
-    this.ok(res, coll);
+    const collectionCards = await this.collectionService.getCollectionByUserId(userId);
+    // if (errors) {
+    //   next(new HTTPError(400, errors, 'getCollection'))
+    // }
+    this.ok(res, collectionCards);
   }
 }

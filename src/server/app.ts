@@ -1,6 +1,5 @@
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import { UserController } from './users/users.controller';
 import { Server } from 'http';
 import { ExeptionFilter } from './errors/exeption.filter';
 import { ILogger } from './logger/logger.interface';
@@ -8,6 +7,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
 import 'reflect-metadata';
 import { IUserController } from './users/users.controller.interface';
+import { ICollectionController } from './collection/coll.controller.interface';
 
 @injectable()
 export class App {
@@ -19,13 +19,15 @@ export class App {
     @inject(TYPES.ILogger) private logger: ILogger,
     @inject(TYPES.IUserController) private userController: IUserController,
     @inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
+    @inject(TYPES.ICollectionController) private collectionController: ICollectionController,
     ) {
 		this.app = express();
-		this.port = 8000;
+		this.port = 5000;
 	}
 
 	useRoutes() {
 		this.app.use('/users', this.userController.router);
+    this.app.use('/collection', this.collectionController.router);
 	}
 
   useExeptionFilters() {

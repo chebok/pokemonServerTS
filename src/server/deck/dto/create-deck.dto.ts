@@ -1,4 +1,4 @@
-export class CreateRoleDto {
+export class CreateDeckDto {
   userId: string;
   cards: number[];
 }

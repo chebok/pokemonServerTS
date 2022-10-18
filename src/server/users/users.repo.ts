@@ -8,5 +8,4 @@ import { Model } from 'mongoose';
 @injectable()
 export class UsersRepository extends BaseRepository implements IUsersRepository {
   protected model: Model<IUserModel> = User;
-
 }
