@@ -23,7 +23,8 @@ export class CollectionController extends BaseController implements ICollectionC
     const cardsToAdd: number[] = req.body.cardsToAdd;
     const [errors, collection] = await this.collectionService.updateCollectionByUserId(userId, cardsToAdd);
     if (errors) {
-      next(new HTTPError(400, errors.toString(), 'updateCollection'))
+      next(new HTTPError(400, errors.toString(), 'updateCollection'));
+      return;
     }
     this.ok(res, collection);
   }

@@ -1,10 +1,12 @@
 import { Container, ContainerModule, interfaces } from 'inversify';
 import { App } from './app';
-import { CollectionController } from './deck/deck.controller';
-import { ICollectionController } from './deck/deck.controller.interface';
-import { CollectionRepository } from './deck/deck.repo';
-import { ICollectionRepository } from './deck/deck.repo.interface';
-import { CollectionService } from './deck/deck.service';
+import { CollectionController } from './collection/coll.controller';
+import { ICollectionController } from './collection/coll.controller.interface';
+import { CollectionRepository } from './collection/coll.repo';
+import { ICollectionRepository } from './collection/coll.repo.interface';
+import { DeckController } from './deck/deck.controller';
+import { IDeckController } from './deck/deck.controller.interface';
+import { CollectionService } from './collection/coll.service';
 import { ExeptionFilter } from './errors/exeption.filter';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
 import { ILogger } from './logger/logger.interface';
@@ -17,6 +19,10 @@ import { UserController } from './users/users.controller';
 import { IUserController } from './users/users.controller.interface';
 import { UsersRepository } from './users/users.repo';
 import { UsersService } from './users/users.service';
+import { DeckRepository } from './deck/deck.repo';
+import { DeckService } from './deck/deck.service';
+import { IDeckRepository } from './deck/deck.repo.interface';
+import { CardsService } from './cards/cards.service';
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<ILogger>(TYPES.ILogger).to(LoggerService);
@@ -30,6 +36,10 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
   bind<ICollectionController>(TYPES.ICollectionController).to(CollectionController);
   bind<ICollectionRepository>(TYPES.ICollectionRepository).to(CollectionRepository);
   bind<CollectionService>(TYPES.CollectionService).to(CollectionService);
+  bind<IDeckController>(TYPES.IDeckController).to(DeckController);
+  bind<IDeckRepository>(TYPES.IDeckRepository).to(DeckRepository);
+  bind<DeckService>(TYPES.DeckService).to(DeckService);
+  bind<CardsService>(TYPES.CardsService).to(CardsService)
 });
 
 function bootstrap() {

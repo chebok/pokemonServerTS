@@ -3,36 +3,46 @@ import 'reflect-metadata';
 import { TYPES } from '../types';
 import { CreateDeckDto } from './dto/create-deck.dto';
 import { IDeckRepository } from './deck.repo.interface';
-import { ICollectionModel } from './deck.model';
-import findCards from '../../cards/findCards';
-import collectionValidate from './deck.validate';
+import { IDeckModel } from './deck.model';
+import { CardsService } from '../cards/cards.service';
+import { ICard } from '../cards/cards.model';
+import { CollectionService } from '../collection/coll.service';
+import tryUpdateDeck from './deck.validate';
 
 @injectable()
-export class CollectionService {
+export class DeckService {
 
     constructor (
-      @inject(TYPES.ICollectionRepository) private collectionRepository: ICollectionRepository,
+      @inject(TYPES.IDeckRepository) private deckRepository: IDeckRepository,
+      @inject(TYPES.CardsService) private cardsService: CardsService,
+      @inject(TYPES.CollectionService) private collectionService: CollectionService
     ) { }
 
-    async createCollection(dto: CreateCollectionDto) {
+    async createDeck(dto: CreateDeckDto) {
       const { userId, cards } = dto;
-      const collection = await this.collectionRepository.create({ userId, cards });
+      const collection = await this.deckRepository.create({ userId, cards });
       return collection;
     }
 
-    async updateCollectionByUserId(userId: string, cardsToAdd: number[]) {
-      const collection: ICollectionModel = await this.collectionRepository.findOne({ userId });
-      const errors = collectionValidate(collection, cardsToAdd);
+    async updateDeckByUserId(userId: string, deckToUpdate: number[]) {
+      const collection = await this.collectionService.getRawCollectionByUserId(userId);
+      const deck: IDeckModel = await this.deckRepository.findOne({ userId });
+      const errors = tryUpdateDeck(collection, deck, deckToUpdate);
       if (errors) {
         return [errors];
       }
-      await collection.save();
-      return [null, collection];
+      await this.deckRepository.save(deck);
+      return [null, deck];
     }
 
-    async getCollectionByUserId(userId: string) {
-      const collection: ICollectionModel = await this.collectionRepository.findOne({ userId });
-      const cardsToSend = await findCards(collection.cards);
+    async getDeckByUserId(userId: string): Promise<ICard[]> {
+      const deck: IDeckModel = await this.deckRepository.findOne({ userId });
+      const cardsToSend = await this.cardsService.findCards(deck.cards);
       return  cardsToSend; 
+    }
+
+    async getRandomDeckCards(): Promise<ICard[]> {
+      const cardsToSend = await this.cardsService.getRandomCards();
+      return cardsToSend; 
     }
 }

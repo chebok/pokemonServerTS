@@ -1,4 +1,6 @@
 import express, { Express } from 'express';
+import cors from 'cors';
+import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { Server } from 'http';
 import { ExeptionFilter } from './errors/exeption.filter';
@@ -7,7 +9,8 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
 import 'reflect-metadata';
 import { IUserController } from './users/users.controller.interface';
-import { ICollectionController } from './deck/deck.controller.interface';
+import { ICollectionController } from './collection/coll.controller.interface';
+import { IDeckController } from './deck/deck.controller.interface';
 
 @injectable()
 export class App {
@@ -20,14 +23,17 @@ export class App {
     @inject(TYPES.IUserController) private userController: IUserController,
     @inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
     @inject(TYPES.ICollectionController) private collectionController: ICollectionController,
+    @inject(TYPES.IDeckController) private deckController: IDeckController,
     ) {
 		this.app = express();
-		this.port = 5000;
+    dotenv.config();
+    this.port = Number(process.env.PORT) || 5000;
 	}
 
 	useRoutes() {
 		this.app.use('/users', this.userController.router);
     this.app.use('/collection', this.collectionController.router);
+    this.app.use('/deck', this.deckController.router);
 	}
 
   useExeptionFilters() {
@@ -35,6 +41,9 @@ export class App {
   }
 
 	public async init() {
+    this.port = Number(process.env.PORT) || 5000;
+    this.app.use(cors({ origin: process.env.ORIGIN || 'http://localhost:3000',
+    credentials: true }))
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 		this.useRoutes();

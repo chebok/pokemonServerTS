@@ -13,9 +13,9 @@ export class DeckController extends BaseController implements IDeckController {
   constructor(@inject(TYPES.ILogger) private loggerService: ILogger, @inject(TYPES.DeckService) private deckService: DeckService) {
     super(loggerService);
     this.bindRoutes([
-      {path: '/:userId', func: this.updateDeck, method: 'post' },
-      {path: '/:userId', func: this.getDeck, method: 'get' },
       {path: '/random', func: this.getRandomDeck, method: 'get' },
+      {path: '/:userId', func: this.updateDeck, method: 'put' },
+      {path: '/:userId', func: this.getDeck, method: 'get' },
     ])
   }
 
@@ -24,7 +24,8 @@ export class DeckController extends BaseController implements IDeckController {
     const deckToUpdate: number[] = req.body.deckToUpdate;
     const [errors, deck] = await this.deckService.updateDeckByUserId(userId, deckToUpdate);
     if (errors) {
-      next(new HTTPError(400, errors.toString(), 'updateDeck'))
+      next(new HTTPError(400, errors.toString(), 'updateDeck'));
+      return;
     }
     this.ok(res, deck);
   }

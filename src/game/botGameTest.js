@@ -1,5 +1,5 @@
 import Game from './Game.js';
-import statsRandomizer from '../cards/randomizer.js';
+import statsRandomizer from '../cardsUtil/randomizer.js';
 
 const cards = [
   {

@@ -4,14 +4,15 @@ import { TYPES } from '../types';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { ICollectionRepository } from './coll.repo.interface';
 import { ICollectionModel } from './coll.model';
-import findCards from '../../cards/findCards';
 import tryAddToCollection from './coll.validate';
+import { CardsService } from '../cards/cards.service';
 
 @injectable()
 export class CollectionService {
 
     constructor (
       @inject(TYPES.ICollectionRepository) private collectionRepository: ICollectionRepository,
+      @inject(TYPES.CardsService) private cardsService: CardsService,
     ) { }
 
     async createCollection(dto: CreateCollectionDto) {
@@ -32,7 +33,7 @@ export class CollectionService {
 
     async getCollectionByUserId(userId: string) {
       const collection: ICollectionModel = await this.collectionRepository.findOne({ userId });
-      const cardsToSend = await findCards(collection.cards);
+      const cardsToSend = await this.cardsService.findCards(collection.cards);
       return  cardsToSend; 
     }
 
